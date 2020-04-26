@@ -1,13 +1,15 @@
 const express = require('express');
-const app =  express();
+const app = express();
 
-const {config} =  require('./config/index');
-
+const { config } = require('./config/index');
 
 const moviesApi = require('./routes/movies');
+
+//body parser
+app.use(express.json());
 
 moviesApi(app);
 
 app.listen(config.port, () => {
-    console.log(`App listening on port ${config.port}! `);
+  console.log(`App listening on port ${config.port}! `);
 });

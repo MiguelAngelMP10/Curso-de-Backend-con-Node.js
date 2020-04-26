@@ -1,38 +1,48 @@
-const {
-    moviesMock
-} = require('../utils/mocks/movies');
-
+const MongoLib = require('../lib/mongo');
 class MovieService {
+  constructor() {
+    this.colletion = 'movies';
+    this.mongoDB = new MongoLib();
+  }
 
-    async getMovies() {
-        const movies = await Promise.resolve(moviesMock);
-        return movies || [];
-    }
+  async getMovies({ tags }) {
+    const query = tags && { tags: { $in: tags } };
+    const movies = await this.mongoDB.getAll(this.colletion, query);
+    return movies || [];
+  }
 
-    async getMovie() {
-        const movie = await Promise.resolve(moviesMock[0]);
-        return movie || {};
-    }
+  async getMovie({ movieId }) {
+    const movie = await this.mongoDB.get(this.colletion, movieId);
+    return movie || {};
+  }
 
-    async createMovie() {
-        const createMovieID = await Promise.resolve(moviesMock[0].id);
-        return createMovieID;
-    }
+  async createMovie({ movie }) {
+    const createMovieID = await this.mongoDB.create(this.colletion, movie);
+    return createMovieID;
+  }
 
-    async updateMovie() {
-        const updateMovieID = await Promise.resolve(moviesMock[0].id)
-        return updateMovieID;
-    }
-    
-    async patchMovie(){
-        const updateMovieID = await Promise.resolve(moviesMock[0].id)
-        return updateMovieID;
-    }
+  async updateMovie({ movieId, movie } = {}) {
+    const updateMovieID = await this.mongoDB.update(
+      this.colletion,
+      movieId,
+      movie
+    );
+    return updateMovieID;
+  }
 
-    async deleteMovie() {
-        const deleteMovieID = await Promise.resolve(moviesMock[0].id)
-        return deleteMovieID;
-    }
+  async patchMovie({ movieId, movie } = {}) {
+    const updateMovieID = await this.mongoDB.update(
+      this.colletion,
+      movieId,
+      movie
+    );
+    return updateMovieID;
+  }
+
+  async deleteMovie({ movieId }) {
+    const deleteMovieID = await this.mongoDB.delete(this.colletion, movieId);
+    return deleteMovieID;
+  }
 }
 
 module.exports = MovieService;

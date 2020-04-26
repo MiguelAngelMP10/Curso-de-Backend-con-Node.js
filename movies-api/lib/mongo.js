@@ -12,6 +12,7 @@ class MongoLib {
   constructor() {
     this.client = new MongoClient(mongo_URI, {
       useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     this.dbName = DB_NAME;
   }

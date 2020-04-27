@@ -16,9 +16,8 @@ const notFoundHandler = require('./utils/middleware/notFoundHandler');
 //body parser
 app.use(express.json());
 
-moviesApi(app);
-
 //routes
+moviesApi(app);
 
 //catch 404
 app.use(notFoundHandler);
